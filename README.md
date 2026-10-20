@@ -2,7 +2,7 @@
 
 Copytrading bot for Solana, written in C#. Watches selected wallets and mirrors their swaps on Raydium and Pump.fun. Uses public RPC nodes — monitoring mode doesn't need any private keys.
 
-![](https://github.com/knightlightst/solana-copytrading-bot/blob/main/Untitled.png?raw=true)
+![]()
 
 ## Features
 
