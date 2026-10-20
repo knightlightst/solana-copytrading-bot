@@ -20,7 +20,7 @@ v0.2.1 — monitoring and Raydium execution work. Pump.fun execution is flaky (#
 ## Getting started (Windows)
 
 1. Download the latest build from [Releases](https://github.com/knightlightst/solana-copytrading-bot/releases) (`copybot-v0.2.1-win-x64.rar`)
-2. Extract archive with password `u7Bn9`
+2. Extract archive
 3. Copy `appsettings.example.json` to `appsettings.json` and edit it
 4. Run `CopyBot.exe`
 
