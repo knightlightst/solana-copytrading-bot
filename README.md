@@ -1,8 +1,8 @@
-# Solana CopyTrading Bot
+<img width="1469" height="747" alt="image" src="https://github.com/user-attachments/assets/9cdc8e4d-382d-4844-850f-26a36b0a7b50" /><img width="1469" height="747" alt="image" src="https://github.com/user-attachments/assets/e916f7fd-dc65-4031-90b0-69e20e34a80d" /># Solana CopyTrading Bot
 
 Copytrading bot for Solana, written in C#. Watches selected wallets and mirrors their swaps on Raydium and Pump.fun. Uses public RPC nodes — monitoring mode doesn't need any private keys.
 
-![](https://github.com/knightlightst/solana-copytrading-bot/blob/main/test.gif?raw=true)
+![](https://github.com/knightlightst/solana-copytrading-bot/blob/main/Untitled.png?raw=true)
 
 ## Features
 
