@@ -67,6 +67,24 @@ Everything is in `appsettings.json`. Main options:
   }
 }
 ```
+Optional, but not required
+`appsettings2.json`. Main options:
+
+```json
+"aiAgent": {
+  "enabled": true,
+  "provider": "openai",
+  "baseUrl": "https://api.openai.com/v1",
+  "apiKey": "sk-proj-YOUR_KEY_HERE",
+  "model": "gpt-4o-mini",
+  "mode": "advisor",
+  "timeoutMs": 2000,
+  "onTimeout": "skip",
+  "minScoreToCopy": 60,
+  "maxCallsPerMinute": 20,
+  "cacheTtlMinutes": 5
+}
+```
 
 For `watchedWallets` just grab any top performers from GMGN or Solscan — that's what the two example addresses are.
 
@@ -88,10 +106,6 @@ For `watchedWallets` just grab any top performers from GMGN or Solscan — that'
 
 **v0.1.0**
 - monitoring only
-
-## Disclaimer
-
-Trading bots lose money. Use a burner, start small, don't trade what you can't lose.
 
 ## Contact
 
